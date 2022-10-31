@@ -1,0 +1,109 @@
+{
+
+    "m0": {
+        "key": "q",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            { "type": "->" }
+        ]
+    },
+    "m2": {
+        "key": "e",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            "copy",
+            { "type": "(" },
+            "paste"
+        ]
+    },
+    "m3": {
+        "key": "r",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            "copy",
+            { "type": "{" },
+            "paste"
+        ]
+    },
+    "m4": {
+        "key": "a",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            "copy",
+            { "type": "if($ ) {" },
+            { "press": "|enter|" },
+            "paste"
+        ]
+    },
+    "m5": {
+        "key": "s",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            { "add_paste": "switch($) {\n\tcase 0:\n\t\tbreak;\n\tcase 1:\n\t\tbreak;\n\tcase 2:\n\t\tbreak;\n}" },
+            "paste"
+        ]
+    },
+    "m7": {
+        "key": "f",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            "copy",
+            { "type": "foreach($ ) {" },
+            { "press": "|enter|" },
+            "paste"
+        ]
+    },
+    "m8": {
+        "key": "z",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            { "type": "<=" }
+        ]
+    },
+    "m9": {
+        "key": "x",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            { "type": ">=" }
+        ]
+    },
+    "m10": {
+        "key": "c",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            { "type": "==" }
+        ]
+    },
+    "m11": {
+        "key": "v",
+        "modifiers": "alt_gr",
+        "steps": [
+            "release_modifiers",
+            { "type": "=>" }
+        ]
+    },
+
+    "m19": {
+        "key": "0",
+        "modifiers": "ctrl",
+        "steps": "stop"
+    },
+    "m20": {
+        "key": "9",
+        "modifiers": "ctrl",
+        "steps": "toggle_pause"
+    }
+}
+
+
+
+
