@@ -21,11 +21,11 @@ class FunctionProvider:
             logger.log("FunctionProvider: PAUSED not processing -> " + func_name + " " + str(func_param));
             return;
 
-        #try:
-        func = getattr(self, func_name);
-        func(func_param);
-        #except Exception:
-            #logger.log("FunctionProvider: ERROR while processing -> " + func_name + " " + str(func_param));
+        try:
+            func = getattr(self, func_name);
+            func(func_param);
+        except Exception:
+            logger.log("FunctionProvider: ERROR while processing -> " + func_name + " " + str(func_param));
 
     def copy(self, *args):
         # Save existing clipboard value to keep original state
@@ -43,7 +43,11 @@ class FunctionProvider:
         # Restore clipboard state
         clipboard.copy(original);
 
-        if not copied or copied.isspace():
+        if (
+            not copied
+            or copied.isspace()
+            or copied == original
+        ):
             return;
 
         self.clipboard_buffer.append(copied);
@@ -51,7 +55,13 @@ class FunctionProvider:
     def paste(self, *args):
 
         # Fetch copied value from buffer
-        copied = self.clipboard_buffer.pop();
+        copied = None;
+
+        try:
+            copied = self.clipboard_buffer.pop();
+        except IndexError:
+            logger.log("FunctionProvider: Notice -> Nothing to paste");
+            return;
 
         if not copied or copied.isspace():
             return;
