@@ -2,3 +2,5 @@
 
 profiles/*
 !profiles/sample_profile.json
+
+config.json
