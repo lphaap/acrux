@@ -1,3 +1,6 @@
 **/__pycache__
 
-profile.json
+profiles/*
+!profiles/sample_profile.json
+
+config.json

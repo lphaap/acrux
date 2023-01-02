@@ -1,0 +1,4 @@
+clipboard==0.0.4
+inquirer==3.1.1
+pynput==1.7.6
+typer==0.7.0
