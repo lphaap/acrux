@@ -22,13 +22,13 @@ class Config(Borg):
     def all(self):
         return self.state;
 
-    def get(self, setting: str):
+    def get_value(self, setting: str):
         try:
             return self.state[setting];
         except:
             return None;
 
-    def set(self, setting: str, value: str, save = True):
+    def set_value(self, setting: str, value: str, save = True):
         try:
             self.state[setting] = value;
             if save:
@@ -47,11 +47,11 @@ class Config(Borg):
 
     @staticmethod
     def set(setting: str, value: str, save = True):
-        return Config().set(setting, value, save);
+        return Config().set_value(setting, value, save);
 
     @staticmethod
-    def get(self, setting: str):
-        return Config().get(setting);
+    def get(setting: str):
+        return Config().get_value(setting);
 
     @staticmethod
     def create():
