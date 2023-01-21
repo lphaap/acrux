@@ -16,7 +16,6 @@ class Config(Borg):
     def __init__(self):
         super().__init__();
         if not hasattr(self, "state"):
-            logger.log("Loaded from file");
             self.state = FileLoader.load("config.json");
 
     def all(self):
