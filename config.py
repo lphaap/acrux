@@ -16,7 +16,6 @@ class Config(Borg):
     def __init__(self):
         super().__init__();
         if not hasattr(self, "state"):
-            logger.log("Loaded from file");
             self.state = FileLoader.load("config.json");
 
     def all(self):
@@ -54,7 +53,7 @@ class Config(Borg):
         return Config().get_value(setting);
 
     @staticmethod
-    def create():
+    def reset():
         default_config = json.dumps(
             {
                 "latest_profile": None,
@@ -63,6 +62,16 @@ class Config(Borg):
             },
             indent = 4
         );
+
+        # Override existing config file
+        if FileLoader.exists("config.json"):
+            FileLoader.save(
+                "config.json",
+                default_config
+            );
+            return;
+
+        # Create one if it does not exist
         FileLoader.create("config.json", default_config);
 
 
