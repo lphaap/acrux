@@ -7,68 +7,19 @@ import json as json;
 import typer;
 import inquirer;
 import os;
-
-# Init typer commands and params:# Init typer CLI interface
-init = typer.Typer(help = "MacroBuilder, for all your macroing needs!");
+import sys
 
 # Start Macro listener with the parsed map
 def main(macro_map: dict):
-    logger.log("Main: Profile selected, starting MacroBuilding.");
+    logger.log("Main: Profile selected, starting Acrux.");
 
     handler = HotkeyHandler(macro_map);
     handler.start();
 
-# Default to latest
-@init.command()
-def default():
-
-    """
-    Try to load the default profile
-
-    Note: requires one to be set first via the 'select' command
-    """
-
-    logger.log("Main: Loading default profile.");
-
-    profile = Config.get("default_profile");
-
-    if not profile:
-        logger.log("Main: No default profile available, save one with the 'select' command");
-        exit();
-
-    profile_map = FileLoader.load(
-        Config.get("profile_folder") + profile
-    );
-    if not profile_map:
-        logger.log("Main: No profile found for latest profile name: '" + profile + "'");
-        exit();
-
-    Config.set("latest_profile", profile);
-    logger.log("Main: Updated latest profile to: '" + profile + "'");
-
-    main(profile_map);
-
-@init.command()
-def latest():
-
-    """
-    Try to load the latest profile
-
-    Note: requires one to be set first via the 'select' command
-    """
-
-    logger.log("Main: Loading latest profile.");
-
-    profile = Config.get("latest_profile");
-
-    if not profile:
-        logger.log("Main: No latest profile available generate one first with the 'select' command");
-        exit();
-
-    profile_map = FileLoader.load(Config.get("profile_folder") + profile);
-    if not profile_map:
-        logger.log("Main: No profile found for latest profile name: '" + profile + "'");
-        exit();
+def setup_default_profile(profile):
+    default_profile = Config.get("default_profile")
+    if (default_profile == profile):
+        return
 
     query = [
         inquirer.Confirm(
@@ -83,11 +34,66 @@ def latest():
         Config.set("default_profile", profile);
         logger.log("Main: Updated default profile to: '" + profile + "'");
 
-    main(profile_map);
-    return;
+def setup_latest_profile(profile):
+    latest_profile = Config.get("latest_profile")
+    if (latest_profile == profile):
+        return
 
+    Config.set("latest_profile", profile);
+    logger.log("Main: Updated latest profile to: '" + profile + "'");
+
+def _validate_folder_path(answers, current):
+    if not current:
+        raise inquirer.errors.ValidationError("", reason="Profile folder cannot be empty!");
+
+    if not current.endswith("/"):
+        raise inquirer.errors.ValidationError("", reason="Invalid path! Path should end in a '/'.");
+
+    if not FileLoader.exists(current):
+        raise inquirer.errors.ValidationError("", reason="Invalid path! No such folder.");
+
+    return True;
+
+# Skip
+def express_startup():
+    logger.log("Main: Trying to load default profile.");
+
+    profile = Config.get("default_profile");
+
+    if not profile:
+        logger.log("Main: Trying to load latest profile.");
+        profile = Config.get("latest_profile");
+
+
+    if not profile:
+        logger.log("Main: Could not determine profile");
+        exit();
+
+    profile_map = FileLoader.load(
+        Config.get("profile_folder") + profile
+    );
+    if not profile_map:
+        logger.log("Main: No profile found for latest profile name: '" + profile + "'");
+        exit();
+
+    Config.set("latest_profile", profile);
+    logger.log("Main: Updated latest profile to: '" + profile + "'");
+
+    main(profile_map);
+
+
+# Skip cmd config withouth parameters
+if len( sys.argv ) == 1:
+    logger.log('Acrux, skipping setup.');
+    express_startup();
+    exit();
+
+# Init typer commands and params:# Init typer CLI interface
+init = typer.Typer(help = "Acrux, for all your macroing needs!");
+
+# Select spesific profile
 @init.command()
-def select(
+def set(
     profile: str = typer.Option(
             "",
             help = "The name of the profile to load.",
@@ -108,27 +114,14 @@ def select(
         logger.log("Main: No profile found for given profile name: '" + profile + "'");
         exit();
 
-    query = [
-        inquirer.Confirm(
-            "confirm",
-            message="Do you want to set '" + profile + "' as your default profile?",
-            default=True
-        ),
-    ];
-
-    set_default = inquirer.prompt(query)["confirm"];
-    if set_default:
-        Config.set("default_profile", profile);
-        logger.log("Main: Updated default profile to: '" + profile + "'");
-
-    Config.set("latest_profile", profile);
-    logger.log("Main: Updated latest profile to: '" + profile + "'");
+    setup_default_profile(profile);
+    setup_latest_profile(profile);
 
     main(profile_map);
     return;
 
 @init.command()
-def list():
+def select():
     """
     Load all profiles for selection from the specified profile folder.
     """
@@ -148,28 +141,18 @@ def list():
         ),
     ];
 
-    selected_profile = inquirer.prompt(query)["profile"];
+    profile = inquirer.prompt(query)["profile"];
 
-    profile_map = FileLoader.load(Config.get("profile_folder") + selected_profile);
+    profile_map = FileLoader.load(Config.get("profile_folder") + profile);
     if not profile_map:
-        logger.log("Main: No profile found for given profile name: '" + selected_profile + "'");
+        logger.log("Main: No profile found for given profile name: '" + profile + "'");
         exit();
+
+    setup_default_profile(profile);
+    setup_latest_profile(profile);
 
     main(profile_map);
     return;
-
-# Handler for profile folder path validation
-def _validate_folder_path(answers, current):
-    if not current:
-        raise inquirer.errors.ValidationError("", reason="Profile folder cannot be empty!");
-
-    if not current.endswith("/"):
-        raise inquirer.errors.ValidationError("", reason="Invalid path! Path should end in a '/'.");
-
-    if not FileLoader.exists(current):
-        raise inquirer.errors.ValidationError("", reason="Invalid path! No such folder.");
-
-    return True;
 
 @init.command()
 def setup():
