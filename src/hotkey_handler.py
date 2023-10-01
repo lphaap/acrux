@@ -1,6 +1,6 @@
-from function_provider import FunctionProvider;
 from pynput import keyboard;
-import logger as logger;
+from src.function_provider import FunctionProvider;
+import src.utils.logger as logger;
 import sys;
 import time;
 import json;
@@ -81,4 +81,3 @@ class HotkeyHandler():
             logger.log("HotkeyHandler: Executing -> " + func + " " + str(param));
 
             self.function_provider.execute(func, param);
-

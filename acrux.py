@@ -1,8 +1,8 @@
-from hotkey_handler import HotkeyHandler;
-from file_loader import FileLoader;
-from config import Config;
+from src.hotkey_handler import HotkeyHandler;
+from src.utils.file_loader import FileLoader;
+from src.utils.config import Config;
 
-import logger as logger;
+import src.utils.logger as logger;
 import json as json;
 import typer;
 import inquirer;

@@ -1,6 +1,6 @@
-from file_loader import FileLoader;
+from src.utils.file_loader import FileLoader;
+import src.utils.logger;
 import json;
-import logger;
 
 # A config / settings Borg-class relying on the config.json file
 # The borg pattern: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch05s23.html
@@ -73,6 +73,3 @@ class Config(Borg):
 
         # Create one if it does not exist
         FileLoader.create("config.json", default_config);
-
-
-

@@ -1,6 +1,6 @@
 from pynput import keyboard, mouse;
 from collections import deque;
-import logger as logger;
+import src.utils.logger as logger;
 import clipboard as clipboard;
 import sys;
 import time;
