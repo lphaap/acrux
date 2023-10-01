@@ -1,8 +1,6 @@
 from pynput import keyboard;
 from src.function_provider import FunctionProvider;
 import src.utils.logger as logger;
-import sys;
-import time;
 import json;
 
 class HotkeyHandler():
