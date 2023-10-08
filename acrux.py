@@ -1,6 +1,6 @@
 from src.utils.file_loader import FileLoader;
 from src.utils.config import Config;
-from src.main import main
+from src.main import init
 
 import src.utils.logger as logger;
 import json as json;
@@ -32,7 +32,7 @@ if len( sys.argv ) == 1:
     Config.set("latest_profile", profile);
     logger.log("Main: Updated latest profile to: '" + profile + "'");
 
-    main(profile_map);
+    init(profile_map);
 
     exit();
 

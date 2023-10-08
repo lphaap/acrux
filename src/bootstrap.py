@@ -1,5 +1,6 @@
 from src.utils.file_loader import FileLoader;
 from src.utils.config import Config;
+from src.main import init
 
 import typer;
 import inquirer;
@@ -75,7 +76,7 @@ def set(
     setup_default_profile(profile);
     setup_latest_profile(profile);
 
-    main(profile_map);
+    init(profile_map);
     return;
 
 @init.command()

@@ -1,7 +1,12 @@
 import abc
-from src.pipeline import Pipeline
+from src.meta.controllable import Controllable
 
-class PipelineInput(metaclass=abc.ABCMeta):
+# Avoid circular dependecies during type checking
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from src.pipeline import Pipeline
+
+class PipelineInput(Controllable, metaclass=abc.ABCMeta):
     @classmethod
     def __subclasscheck__(cls, subclass):
         return (
@@ -9,7 +14,7 @@ class PipelineInput(metaclass=abc.ABCMeta):
             callable(subclass.publish)
         )
 
-    def __init__(self, pipeline: Pipeline):
+    def __init__(self, pipeline: 'Pipeline'):
         self.pipeline = pipeline;
 
     def publish(self, input):

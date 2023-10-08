@@ -1,10 +1,9 @@
 from pynput import keyboard
-from src.meta.controllable import Controllable
 from src.meta.pipeline_input import PipelineInput
 from src.pipeline import Pipeline
 import src.utils.logger as logger;
 
-class KeyboardListener(PipelineInput, Controllable):
+class KeyboardListener(PipelineInput):
 
     def __init__(self, pipeline: Pipeline):
         logger.log("KeyboardListener: Init");
@@ -17,7 +16,6 @@ class KeyboardListener(PipelineInput, Controllable):
             on_press=self.publish,
             on_release=self.publish
         );
-
 
     def start(self):
         if self.pipeline == None:
