@@ -1,8 +1,9 @@
-from pynput import keyboard, mouse;
 from collections import deque;
-import src.utils.logger as logger;
+
+from pynput import keyboard;
 import clipboard as clipboard;
-import sys;
+
+import src.utils.logger as logger;
 import time;
 
 class FunctionProvider:
