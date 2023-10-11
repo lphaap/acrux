@@ -1,6 +1,7 @@
 from src.meta.controllable import Controllable
 from src.meta.pipeline_input import PipelineInput
 from src.meta.pipeline_filter import PipelineFilter
+from pynput.keyboard import Key
 import src.utils.logger as logger;
 
 class Pipeline(Controllable):
@@ -18,10 +19,13 @@ class Pipeline(Controllable):
         self.active = False
 
     def process(self, data):
-        logger.log(data.char)
-        logger.log(data.KeyCode)
+        # logger.log(data)
         for filter in self.filters:
             data = filter.process(data)
+            if data == None:
+                return
+
+            logger.log(data)
 
     def start(self):
         logger.log("Pipeline: start")
