@@ -1,7 +1,7 @@
 from pynput import keyboard
-from src.meta.pipeline_input import PipelineInput
+from src.meta.pipelineInput import PipelineInput
 from src.pipeline import Pipeline
-from src.meta.key_action import KeyAction
+from src.meta.keyAction import KeyAction
 import src.utils.logger as logger;
 
 class KeyboardListener(PipelineInput):
@@ -14,11 +14,11 @@ class KeyboardListener(PipelineInput):
 
         self.active = False;
         self.listener = keyboard.Listener(
-            on_press=self.handle_press,
-            on_release=self.handle_release
+            on_press=self.handlePress,
+            on_release=self.handleRelease
         );
 
-    def handle_press(self, key):
+    def handlePress(self, key):
         self.publish({
             'key': key,
             # Parse key regardles of modifiers
@@ -26,7 +26,7 @@ class KeyboardListener(PipelineInput):
             'action': KeyAction.PRESS
         })
 
-    def handle_release(self, key):
+    def handleRelease(self, key):
         self.publish({
             'key': key,
             # Parse key regardles of modifiers
@@ -47,5 +47,5 @@ class KeyboardListener(PipelineInput):
         self.active = False;
         self.listener.stop();
 
-    def is_active(self):
+    def isActive(self):
         return self.active

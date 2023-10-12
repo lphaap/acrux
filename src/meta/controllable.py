@@ -10,8 +10,8 @@ class Controllable(metaclass=abc.ABCMeta):
             hasattr(subclass, 'stop') and
             callable(subclass.stop) and
 
-            hasattr(subclass, 'is_active') and
-            callable(subclass.is_active) and
+            hasattr(subclass, 'isActive') and
+            callable(subclass.isActive) and
 
             hasattr(subclass, 'active')
         )
@@ -27,6 +27,6 @@ class Controllable(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def is_active(self):
+    def isActive(self):
         """Is object process active?"""
         raise NotImplementedError

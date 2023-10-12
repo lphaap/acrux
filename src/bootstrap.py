@@ -1,4 +1,4 @@
-from src.utils.file_loader import FileLoader;
+from src.utils.fileLoader import FileLoader;
 from src.utils.config import Config;
 from src.main import init
 
@@ -9,9 +9,9 @@ import src.utils.logger as logger;
 import json as json;
 import sys;
 
-def setup_default_profile(profile):
-    default_profile = Config.get("default_profile")
-    if (default_profile == profile):
+def setupDefaultProfile(profile):
+    defaultProfile = Config.get("defaultProfile")
+    if (defaultProfile == profile):
         return
 
     query = [
@@ -22,20 +22,20 @@ def setup_default_profile(profile):
         ),
     ];
 
-    set_default = inquirer.prompt(query)["confirm"];
-    if set_default:
-        Config.set("default_profile", profile);
+    setDefault = inquirer.prompt(query)["confirm"];
+    if setDefault:
+        Config.set("defaultProfile", profile);
         logger.log("Main: Updated default profile to: '" + profile + "'");
 
-def setup_latest_profile(profile) -> None:
-    latest_profile = Config.get("latest_profile")
-    if (latest_profile == profile):
+def setupLatestProfile(profile) -> None:
+    latestProfile = Config.get("latestProfile")
+    if (latestProfile == profile):
         return
 
-    Config.set("latest_profile", profile);
+    Config.set("latestProfile", profile);
     logger.log("Main: Updated latest profile to: '" + profile + "'");
 
-def _validate_folder_path(answers, current):
+def validateFolderPath(current):
     if not current:
         raise inquirer.errors.ValidationError("", reason="Profile folder cannot be empty!");
 
@@ -68,15 +68,15 @@ def set(
         logger.log("Main: No profile given aborting");
         exit();
 
-    profile_map = FileLoader.load(Config.get("profile_folder") + profile);
-    if not profile_map:
+    profileMap = FileLoader.load(Config.get("profileFolder") + profile);
+    if not profileMap:
         logger.log("Main: No profile found for given profile name: '" + profile + "'");
         exit();
 
-    setup_default_profile(profile);
-    setup_latest_profile(profile);
+    setupDefaultProfile(profile);
+    setupLatestProfile(profile);
 
-    init(profile_map);
+    init(profileMap);
     return;
 
 @init.command()
@@ -87,8 +87,8 @@ def select():
 
     logger.log("Main: Enabling profile list selection.");
 
-    file_names = FileLoader.list(Config.get("profile_folder"));
-    if not file_names:
+    fileNames = FileLoader.list(Config.get("profileFolder"));
+    if not fileNames:
         logger.log("Main: No profiles found in the specified profile folder.");
         exit();
 
@@ -96,21 +96,21 @@ def select():
         inquirer.List(
             "profile",
             message="Select the profile to load?",
-            choices=file_names,
+            choices=fileNames,
         ),
     ];
 
     profile = inquirer.prompt(query)["profile"];
 
-    profile_map = FileLoader.load(Config.get("profile_folder") + profile);
-    if not profile_map:
+    profileMap = FileLoader.load(Config.get("profileFolder") + profile);
+    if not profileMap:
         logger.log("Main: No profile found for given profile name: '" + profile + "'");
         exit();
 
-    setup_default_profile(profile);
-    setup_latest_profile(profile);
+    setupDefaultProfile(profile);
+    setupLatestProfile(profile);
 
-    main(profile_map);
+    init(profileMap);
     return;
 
 @init.command()
@@ -155,11 +155,11 @@ def setup():
 
 
     # Query default config usage
-    profile_folder = Config.get("profile_folder");
+    profileFolder = Config.get("profileFolder");
     query = [
         inquirer.Confirm(
             "default",
-            message="Default profile folder set to '" + profile_folder + "', Would you like to set another?",
+            message="Default profile folder set to '" + profileFolder + "', Would you like to set another?",
             default=False
         ),
     ];
@@ -170,14 +170,14 @@ def setup():
             inquirer.Text(
                 "folder",
                 message="Input profile folder path relative to home folder",
-                validate=_validate_folder_path
+                validate=validateFolderPath
             ),
         ];
 
-        profile_folder = inquirer.prompt(query)["folder"];
-        Config.set("profile_folder", profile_folder);
+        profileFolder = inquirer.prompt(query)["folder"];
+        Config.set("profileFolder", profileFolder);
 
-        logger.log("Main: Profile folder set to '" + profile_folder + "'");
+        logger.log("Main: Profile folder set to '" + profileFolder + "'");
 
     logger.log("Main: Config setup done returning.");
     return;

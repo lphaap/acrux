@@ -1,14 +1,14 @@
-from src.utils.file_loader import FileLoader;
+from src.utils.fileLoader import FileLoader;
 import src.utils.logger;
 import json;
 
 # A config / settings Borg-class relying on the config.json file
 # The borg pattern: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch05s23.html
 class Borg:
-    _shared_state: dict = {};
+    sharedState: dict = {};
 
     def __init__(self) -> None:
-        self.__dict__ = self._shared_state
+        self.__dict__ = self.sharedState
 
 
 class Config(Borg):
@@ -21,13 +21,13 @@ class Config(Borg):
     def all(self):
         return self.state;
 
-    def get_value(self, setting: str):
+    def getValue(self, setting: str):
         try:
             return self.state[setting];
         except:
             return None;
 
-    def set_value(self, setting: str, value: str, save = True):
+    def setValue(self, setting: str, value: str, save = True):
         try:
             self.state[setting] = value;
             if save:
@@ -46,19 +46,19 @@ class Config(Borg):
 
     @staticmethod
     def set(setting: str, value: str, save = True):
-        return Config().set_value(setting, value, save);
+        return Config().setValue(setting, value, save);
 
     @staticmethod
     def get(setting: str):
-        return Config().get_value(setting);
+        return Config().getValue(setting);
 
     @staticmethod
     def reset():
-        default_config = json.dumps(
+        defaultConfig = json.dumps(
             {
-                "latest_profile": None,
-                "default_profile": None,
-                "profile_folder": "profiles/"
+                "latestProfile": None,
+                "defaultProfile": None,
+                "profileFolder": "profiles/"
             },
             indent = 4
         );
@@ -67,9 +67,9 @@ class Config(Borg):
         if FileLoader.exists("config.json"):
             FileLoader.save(
                 "config.json",
-                default_config
+                defaultConfig
             );
             return;
 
         # Create one if it does not exist
-        FileLoader.create("config.json", default_config);
+        FileLoader.create("config.json", defaultConfig);

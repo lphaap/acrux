@@ -1,4 +1,4 @@
-from src.utils.file_loader import FileLoader;
+from src.utils.fileLoader import FileLoader;
 from src.utils.config import Config;
 from src.main import init
 
@@ -11,28 +11,28 @@ if len( sys.argv ) == 1:
     logger.log('Acrux, skipping setup.');
 
     logger.log("Main: Trying to load default profile.");
-    profile = Config.get("default_profile");
+    profile = Config.get("defaultProfile");
 
     if not profile:
         logger.log("Main: Trying to load latest profile.");
-        profile = Config.get("latest_profile");
+        profile = Config.get("latestProfile");
 
 
     if not profile:
         logger.log("Main: Could not determine profile");
         exit();
 
-    profile_map = FileLoader.load(
-        Config.get("profile_folder") + profile
+    profileMap = FileLoader.load(
+        Config.get("profileFolder") + profile
     );
-    if not profile_map:
+    if not profileMap:
         logger.log("Main: No profile found for latest profile name: '" + profile + "'");
         exit();
 
-    Config.set("latest_profile", profile);
+    Config.set("latestProfile", profile);
     logger.log("Main: Updated latest profile to: '" + profile + "'");
 
-    init(profile_map);
+    init(profileMap);
 
     exit();
 

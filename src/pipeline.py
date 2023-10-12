@@ -1,6 +1,6 @@
 from src.meta.controllable import Controllable
-from src.meta.pipeline_input import PipelineInput
-from src.meta.pipeline_filter import PipelineFilter
+from src.meta.pipelineInput import PipelineInput
+from src.meta.pipelineFilter import PipelineFilter
 from pynput.keyboard import Key
 import src.utils.logger as logger;
 
@@ -37,5 +37,5 @@ class Pipeline(Controllable):
         self.active = False;
         self.input.stop();
 
-    def is_active(self):
+    def isActive(self):
         return self.active;
