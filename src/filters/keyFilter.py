@@ -4,8 +4,6 @@ from src.meta.keyAction import KeyAction
 from src.meta.pipelineFilter import PipelineFilter
 import src.utils.logger as logger;
 
-
-
 class KeyFilter(PipelineFilter):
 
     def __init__(self):
