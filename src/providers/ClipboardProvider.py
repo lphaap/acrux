@@ -59,8 +59,6 @@ class ClipboardProvider():
 
     def pressCopy(self, *args):
         KeyboardProvider.pressWithModifier('c', 'ctrl_l')
-        self.delay(0.02);
 
     def pressPaste(self, *args):
         KeyboardProvider.pressWithModifier('v', 'ctrl_l')
-        self.delay(0.02);
