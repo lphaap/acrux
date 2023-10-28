@@ -54,7 +54,7 @@ class ClipboardProvider():
         # Restore clipboard state
         clipboard.copy(original);
 
-    def saveToClipboard(self, structure):
+    def save(self, structure):
         self.buffer.append(structure);
 
     def pressCopy(self, *args):
