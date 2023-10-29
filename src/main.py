@@ -4,6 +4,7 @@ from src.filters.keyFilter import KeyFilter
 from src.filters.hotkeyFilter import HotkeyFilter
 from src.keyboardListener import KeyboardListener
 from src.pipeline import Pipeline
+from threading import Condition
 import src.utils.logger as logger;
 import json as json;
 import time
@@ -21,8 +22,9 @@ def init(hotkeyMap: dict):
     ])
     pipeline.start()
 
-    for i in range(0, 10):
-        time.sleep(1)
+    condition = Condition()
+    with condition:
+        condition.wait()
 
     logger.log("Main: Stopping Acrux");
     pipeline.stop()
