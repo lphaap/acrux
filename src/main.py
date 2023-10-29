@@ -1,3 +1,4 @@
+from src.filters.executorFilter import ExecutorFilter
 from src.filters.functionFilter import FunctionFilter
 from src.filters.keyFilter import KeyFilter
 from src.filters.hotkeyFilter import HotkeyFilter
@@ -15,7 +16,8 @@ def init(hotkeyMap: dict):
     pipeline = Pipeline(KeyboardListener, [
         KeyFilter(), # Remove noice and track pressed keys
         HotkeyFilter(hotkeyMap), # Match pressed keys agains hotkey map
-        FunctionFilter() # Parse hotkey map into functions and params
+        FunctionFilter(), # Parse hotkey map into functions and params
+        ExecutorFilter()
     ])
     pipeline.start()
 

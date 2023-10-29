@@ -10,18 +10,21 @@ import src.utils.logger as logger;
 class FunctionFilter(PipelineFilter):
 
     def __init__(self):
+        clipboard = ClipboardProvider()
         clipboardMap = {
-            "clipboard.copy": ClipboardProvider.copy,
-            "clipboard.paste": ClipboardProvider.paste,
-            "clipboard.save": ClipboardProvider.save,
-            "clipboard.pressCopy": ClipboardProvider.pressCopy,
-            "clipboard.pressPaste": ClipboardProvider.pressPaste
+            "clipboard.copy": clipboard.copy,
+            "clipboard.paste": clipboard.paste,
+            "clipboard.save": clipboard.save,
+            "clipboard.pressCopy": clipboard.pressCopy,
+            "clipboard.pressPaste": clipboard.pressPaste
         }
 
+        keyboard = KeyboardProvider()
         keyboardMap = {
-            "keyboard.press": KeyboardProvider.press,
-            "keboard.pressWithModifiers": KeyboardProvider.pressWithModifier,
-            "keyboard.type": KeyboardProvider.type
+            "keyboard.press": keyboard.press,
+            "keboard.pressWithModifiers": keyboard.pressWithModifier,
+            "keyboard.type": keyboard.type,
+            "keyboard.clearModifiers": keyboard.clearModifiers
         }
 
         self.map = {}
@@ -32,7 +35,7 @@ class FunctionFilter(PipelineFilter):
         functions = []
 
         macro = data
-        for fn in macro.values():
+        for fn in macro:
             # Eg. { "function_name": "function_param" }
             if isinstance(fn, dict):
                 name = list(fn.keys())[0];

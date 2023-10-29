@@ -12,7 +12,7 @@ class ExecutorFilter(PipelineFilter):
 
     def process(self, data: any):
         functions = data
-        for definition in functions.values():
+        for definition in functions:
             function = definition[0]
             params = definition[1]
 

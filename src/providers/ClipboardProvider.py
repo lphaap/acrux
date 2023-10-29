@@ -1,4 +1,6 @@
-from collections import deque;
+from collections import deque
+
+from pynput import keyboard;
 
 import clipboard as clipboard;
 from src.providers.KeyboardProvider import KeyboardProvider
@@ -8,6 +10,7 @@ import src.utils.logger as logger;
 class ClipboardProvider():
     def __init__(self):
         self.buffer = deque(5*[0], 5);
+        self.keyboard = KeyboardProvider()
 
     def copy(self, *args):
         # Save existing clipboard value to keep original state
@@ -58,7 +61,7 @@ class ClipboardProvider():
         self.buffer.append(structure);
 
     def pressCopy(self, *args):
-        KeyboardProvider.pressWithModifier('c', 'ctrl_l')
+        self.keyboard.pressWithModifier('c', keyboard.Key.ctrl_l)
 
     def pressPaste(self, *args):
-        KeyboardProvider.pressWithModifier('v', 'ctrl_l')
+        self.keyboard.pressWithModifier('v', keyboard.Key.ctrl_l)

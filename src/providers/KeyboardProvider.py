@@ -2,6 +2,7 @@ from collections import deque
 from types import resolve_bases;
 from pynput import keyboard;
 import clipboard as clipboard;
+import time;
 
 class KeyboardProvider():
 
@@ -15,7 +16,6 @@ class KeyboardProvider():
         keyboard.Controller().press(modifier)
         keyboard.Controller().tap(key)
         keyboard.Controller().release(modifier)
-        self.delay(0.01);
 
 
     def clearModifiers(self, *args):
@@ -32,5 +32,3 @@ class KeyboardProvider():
 
         for key in modifiers:
             keyboard.Controller().release(key);
-
-        self.delay(0.01);
