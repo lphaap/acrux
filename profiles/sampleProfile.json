@@ -3,7 +3,6 @@
         "key": "e",
         "modifiers": "alt_gr",
         "steps": [
-            "keyboard.clearModifiers",
             "clipboard.copy",
             { "keyboard.type": "[" },
             "clipboard.paste"
@@ -13,7 +12,6 @@
         "key": "r",
         "modifiers": "alt_gr",
         "steps": [
-            "keyboard.clearModifiers",
             "clipboard.copy",
             { "keyboard.type": "{" },
             "clipboard.paste"
@@ -23,7 +21,6 @@
         "key": "v",
         "modifiers": "alt_gr",
         "steps": [
-            "keyboard.clearModifiers",
             "state.toggle"
         ]
     },
@@ -31,7 +28,6 @@
         "key": "n",
         "modifiers": "alt_gr",
         "steps": [
-            "keyboard.clearModifiers",
             "state.kill"
         ]
     }
