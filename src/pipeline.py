@@ -11,7 +11,7 @@ class Pipeline(Controllable):
         input: PipelineInput.__class__,
         filters: PipelineFilter
     ):
-        logger.log("Pipeline: init")
+        logger.log("Pipeline: build")
         self.input = input(self)
 
         self.filters = filters

@@ -1,5 +1,4 @@
 from src.utils.fileLoader import FileLoader;
-import src.utils.logger;
 import json;
 
 # A config / settings Borg-class relying on the config.json file
@@ -9,7 +8,6 @@ class Borg:
 
     def __init__(self) -> None:
         self.__dict__ = self.sharedState
-
 
 class Config(Borg):
 

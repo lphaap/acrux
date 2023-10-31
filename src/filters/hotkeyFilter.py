@@ -1,8 +1,5 @@
-from copy import deepcopy
-from pynput.keyboard import Key, Listener
-from src.meta.keyAction import KeyAction
 from src.meta.pipelineFilter import PipelineFilter
-
+from copy import deepcopy
 import src.utils.logger as logger;
 
 class HotkeyFilter(PipelineFilter):
@@ -12,14 +9,23 @@ class HotkeyFilter(PipelineFilter):
 
     def process(self, data: any):
         key = data['key']
-        modifier =  self.parseModifier(
+        modifier = self.parseModifier(
             data['modifiers']
         )
 
         modifierGroup = self.map.get(modifier)
         if modifierGroup:
-            macro = modifierGroup.get(key)
+            # Use a copy so singleton does not get side-effects
+            macro = deepcopy(modifierGroup.get(key))
             if macro:
+                if (
+                    'shift' in modifier or
+                    'alt' in modifier or
+                    'ctrl' in modifier
+                ):
+                    # Insert automatic modifier clearing
+                    macro.insert(0, "keyboard.clearModifiers")
+
                 return macro
 
         return None

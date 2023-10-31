@@ -1,8 +1,11 @@
 TODO:
- - Make release modifiers automatic based on active modifiers
- - Clean up start up flow
- - Create controls for stopping, pausing, starting and reloading
- - Custom Command prompt with seperate profile?
-    -> Input controls
-    -> GUI element
- - Multithreading the pipeline, necessary?
+ - CHORE: Clean up start up flow
+ - CHORE: Clean up imports
+ - CHORE: Add strong typing
+ - FEAT: Create controls reloading and changing maps
+   -> Multi map support?
+ - FEAT: Custom Command prompt with seperate profile?
+   -> Input controls
+   -> GUI element
+ - FEAT: Multithreading the pipeline, necessary?
+[[[[[[[[[[[[[[]]]]]]]]]]]]]]
