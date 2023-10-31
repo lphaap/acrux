@@ -5,7 +5,6 @@ from src.filters.keyFilter import KeyFilter
 from src.filters.hotkeyFilter import HotkeyFilter
 from src.keyboardListener import KeyboardListener
 from src.pipeline import Pipeline
-from threading import Condition
 import src.utils.logger as logger;
 import json as json;
 import time

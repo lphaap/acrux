@@ -17,7 +17,6 @@ class StateProvider(Borg):
             }
 
     def _isAlive(self):
-        print(self.state)
         return self.state['alive']
 
     def _isActive(self):
