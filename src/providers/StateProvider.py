@@ -1,6 +1,10 @@
-from src.utils.fileLoader import FileLoader;
-from src.meta.borg import Borg;
+# A config / settings Borg-class relying on the config.json file
+# The borg pattern: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch05s23.html
+class Borg:
+    sharedState: dict = {};
 
+    def __init__(self) -> None:
+        self.__dict__ = self.sharedState
 
 class StateProvider(Borg):
 
@@ -8,49 +12,50 @@ class StateProvider(Borg):
         super().__init__();
         if not hasattr(self, "state"):
             self.state = {
-                "active": True,
-                "alive": True
+                'active': True,
+                'alive': True
             }
 
-    def isAlive(self):
-        return self.state.alive
+    def _isAlive(self):
+        print(self.state)
+        return self.state['alive']
 
-    def isActive(self):
-        return self.state.active
+    def _isActive(self):
+        return self.state['active']
 
-    def start(self):
-        self.state.active = True
+    def _start(self):
+        self.state['active'] = True
 
-    def stop(self):
-        self.state.active = False
+    def _stop(self):
+        self.state['active'] = False
 
-    def toggle(self):
-        self.state.active = not self.state.active
+    def _toggle(self):
+        self.state['active'] = not self.state['active']
 
-    def kill(self):
-        self.state.alive = False
+    def _kill(self):
+        self.state['alive'] = False
 
-
-    @staticmethod
-    def isAlive():
-        return StateProvider().isAlive()
 
     @staticmethod
-    def isActive():
-        return StateProvider().isActive()
+    def isAlive(*args):
+        return StateProvider()._isAlive()
 
     @staticmethod
-    def start():
-        StateProvider().start()
+    def isActive(*args):
+        return StateProvider()._isActive()
 
     @staticmethod
-    def stop():
-        StateProvider().stop()
+    def start(*args):
+        return StateProvider()._start()
 
     @staticmethod
-    def toggle():
-        StateProvider().toggle()
+    def stop(*args):
+        return StateProvider()._stop()
 
     @staticmethod
-    def kill():
-        StateProvider().kill()
+    def toggle(*args):
+        return StateProvider()._toggle()
+
+    @staticmethod
+    def kill(*args):
+        return StateProvider()._kill()
