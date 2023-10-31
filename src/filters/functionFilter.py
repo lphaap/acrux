@@ -2,6 +2,7 @@ from copy import deepcopy
 from pynput.keyboard import Key, Listener
 from src.meta.keyAction import KeyAction
 from src.meta.pipelineFilter import PipelineFilter
+from src.providers.StateProvider import StateProvider
 from src.providers.ClipboardProvider import ClipboardProvider
 from src.providers.KeyboardProvider import KeyboardProvider
 
@@ -27,12 +28,28 @@ class FunctionFilter(PipelineFilter):
             "keyboard.clearModifiers": keyboard.clearModifiers
         }
 
-        self.map = {}
-        self.map.update(clipboardMap)
-        self.map.update(keyboardMap)
+        stateMap = {
+            "state.stop": StateProvider.stop,
+            "state.start": StateProvider.start,
+            "state.toggle": StateProvider.toggle,
+            "state.kill": StateProvider.kill
+        }
+
+        self.activeMap = {}
+        self.activeMap.update(clipboardMap)
+        self.activeMap.update(keyboardMap)
+        self.activeMap.update(stateMap)
+
+        self.inactiveMap = {}
+        self.inactiveMap.update(stateMap)
 
     def process(self, data: any):
         functions = []
+
+        # Only allow state handler function during pause
+        map = self.activeMap
+        if not StateProvider.isActive():
+            map = self.inactiveMap
 
         macro = data
         for fn in macro:
@@ -45,7 +62,7 @@ class FunctionFilter(PipelineFilter):
                 name = fn
                 params = None
 
-            function = self.map.get(name)
+            function = map.get(name)
             if function == None:
                 continue;
 
