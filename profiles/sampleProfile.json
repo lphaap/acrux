@@ -18,5 +18,21 @@
             { "keyboard.type": "{" },
             "clipboard.paste"
         ]
+    },
+    "m2": {
+        "key": "v",
+        "modifiers": "alt_gr",
+        "steps": [
+            "keyboard.clearModifiers",
+            "state.toggle"
+        ]
+    },
+    "m3": {
+        "key": "n",
+        "modifiers": "alt_gr",
+        "steps": [
+            "keyboard.clearModifiers",
+            "state.kill"
+        ]
     }
 }
