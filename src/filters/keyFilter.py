@@ -26,6 +26,9 @@ class KeyFilter(PipelineFilter):
             if key in self.pressedKeys:
                 return
 
+            if key == None:
+                return
+
             payload = {
                 'key': key,
                 'modifiers': deepcopy(self.pressedKeys)

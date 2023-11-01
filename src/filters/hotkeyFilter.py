@@ -55,6 +55,9 @@ class HotkeyFilter(PipelineFilter):
             return 'none'
 
         if isinstance(modifiers, list):
+            # Remove modifiers that are 'None'
+            modifiers = [m for m in modifiers if m is not None]
+
             modifiers.sort()
             return "-".join(modifiers)
 
