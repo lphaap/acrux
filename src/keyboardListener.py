@@ -1,12 +1,12 @@
 from pynput import keyboard
 from src.meta.pipelineInput import PipelineInput
-from src.pipeline import Pipeline
+from src.pipelineManager import PipelineManager
 from src.meta.keyAction import KeyAction
 import src.utils.logger as logger;
 
 class KeyboardListener(PipelineInput):
 
-    def __init__(self, pipeline: Pipeline):
+    def __init__(self, pipeline: PipelineManager):
         logger.log("KeyboardListener: init");
 
         # Init pipeline input parent
@@ -39,8 +39,10 @@ class KeyboardListener(PipelineInput):
         if self.pipeline == None:
             raise Exception("No pipeline registered")
 
-        self.active = True;
-        self.listener.start();
+        with self.listener as listener:
+            self.active = True;
+            listener.join()
+
 
     def stop(self):
         logger.log("KeyboardListener: stop")
