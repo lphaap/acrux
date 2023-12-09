@@ -4,7 +4,7 @@ from src.meta.controllable import Controllable
 # Avoid circular dependecies during type checking
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from src.pipeline import Pipeline
+    from src.pipelineManager import Pipeline
 
 class PipelineInput(Controllable, metaclass=abc.ABCMeta):
     @classmethod
