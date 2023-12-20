@@ -1,34 +1,36 @@
 {
-    "m0": {
-        "key": "e",
-        "modifiers": "alt_gr",
-        "steps": [
-            "clipboard.copy",
-            { "keyboard.type": "[" },
-            "clipboard.paste"
-        ]
-    },
-    "m1": {
-        "key": "r",
-        "modifiers": "alt_gr",
-        "steps": [
-            "clipboard.copy",
-            { "keyboard.type": "{" },
-            "clipboard.paste"
-        ]
-    },
-    "m2": {
-        "key": "v",
-        "modifiers": "alt_gr",
-        "steps": [
-            "state.toggle"
-        ]
-    },
-    "m3": {
-        "key": "n",
-        "modifiers": "alt_gr",
-        "steps": [
-            "state.kill"
-        ]
-    }
+    "macros": [
+        {
+            "key": "e",
+            "modifiers": "alt_gr",
+            "steps": [
+                "clipboard.copy",
+                { "keyboard.type": "[" },
+                "clipboard.paste"
+            ]
+        },
+        {
+            "key": "r",
+            "modifiers": "alt_gr",
+            "steps": [
+                "clipboard.copy",
+                { "keyboard.type": "{" },
+                "clipboard.paste"
+            ]
+        },
+        {
+            "key": "v",
+            "modifiers": "alt_gr",
+            "steps": [
+                "state.toggle"
+            ]
+        },
+        {
+            "key": "n",
+            "modifiers": "alt_gr",
+            "steps": [
+                "state.kill"
+            ]
+        }
+    ]
 }

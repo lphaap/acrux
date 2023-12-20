@@ -37,17 +37,19 @@ def load():
 
     return profileMap
 
-def init(hotkeyMap: dict):
+def init(profile: dict):
     pipelineManager = PipelineManager(KeyboardListener)
 
-    macroLine = [
-        KeyFilter(), # Remove noice and track pressed keys
-        HotkeyFilter(hotkeyMap), # Match pressed keys agains hotkey map
-        FunctionFilter(), # Parse hotkey map into functions and params
-        ExecutorFilter() # Execute the mapped functions
-    ]
+    if "macros" in profile:
+        macroPipeline = [
+            KeyFilter(), # Remove noice and track pressed keys
+            HotkeyFilter(profile['macros']), # Match pressed keys agains hotkey map
+            FunctionFilter(), # Parse hotkey map into functions and params
+            ExecutorFilter() # Execute the mapped functions
+        ]
 
-    pipelineManager.createPipeline(macroLine)
+        logger.log("Main: Setting up macro pipeline");
+        pipelineManager.createPipeline(macroPipeline)
 
     logger.log("Main: Starting Acrux");
     pipelineManager.start()

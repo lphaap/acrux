@@ -32,7 +32,7 @@ class HotkeyFilter(PipelineFilter):
 
     def parseKeyMap(self, map):
         parsedMap = {}
-        for entry in map.values():
+        for entry in map:
             modifier = 'none'
             if 'modifiers' in entry:
                 modifier = self.parseModifier(
