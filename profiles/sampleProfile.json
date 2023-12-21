@@ -1,8 +1,25 @@
 {
+    "functions": {
+        "trigger": {
+            "key": "s",
+            "modifiers": "alt_gr"
+        },
+        "actions": [
+            {
+                "identifier": "test-id",
+                "name": "Test",
+                "steps": [
+
+                ]
+            }
+        ]
+    },
     "macros": [
         {
-            "key": "e",
-            "modifiers": "alt_gr",
+            "trigger": {
+                "key": "e",
+                "modifiers": "alt_gr"
+            },
             "steps": [
                 "clipboard.copy",
                 { "keyboard.type": "[" },
@@ -10,8 +27,10 @@
             ]
         },
         {
-            "key": "r",
-            "modifiers": "alt_gr",
+            "trigger": {
+                "key": "r",
+                "modifiers": "alt_gr"
+            },
             "steps": [
                 "clipboard.copy",
                 { "keyboard.type": "{" },
@@ -19,15 +38,19 @@
             ]
         },
         {
-            "key": "v",
-            "modifiers": "alt_gr",
+            "trigger": {
+                "key": "v",
+                "modifiers": "alt_gr"
+            },
             "steps": [
                 "state.toggle"
             ]
         },
         {
-            "key": "n",
-            "modifiers": "alt_gr",
+            "trigger": {
+                "key": "n",
+                "modifiers": "alt_gr"
+            },
             "steps": [
                 "state.kill"
             ]
