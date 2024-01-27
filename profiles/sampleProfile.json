@@ -1,15 +1,25 @@
 {
     "functions": {
-        "trigger": {
-            "key": "s",
-            "modifiers": "alt_gr"
+        "startup": {
+            "trigger": {
+                "key": "z",
+                "modifiers": "alt_gr"
+            },
+            "steps": [
+                "gui.init"
+            ]
         },
         "actions": [
             {
-                "identifier": "test-id",
-                "name": "Test",
+                "identifier": "test.A1",
                 "steps": [
-
+                    "state.kill"
+                ]
+            },
+            {
+                "identifier": "test.B2",
+                "steps": [
+                    "state.kill"
                 ]
             }
         ]

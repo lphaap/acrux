@@ -10,6 +10,9 @@ class SearchInterface(Tk):
     def __init__(self, context):
         super().__init__()
 
+        # Result variable
+        self.selection = None;
+
         # Initialize main components
         self.initWindow()
         self.frame = self.initFrame()
@@ -129,9 +132,8 @@ class SearchInterface(Tk):
             self.renderSelection()
 
     def handleSelectionEvent(self):
-        print(self.renderedSelection['data'])
+        self.selection = self.renderedSelection['data']
         self.destroy()
-
 
     def renderContext(self, *args):
         # Don't render changes if none happen
@@ -218,38 +220,5 @@ class SearchInterface(Tk):
         except:
             return
 
-
-if __name__ == "__main__":
-    texts = [
-        "AAAAAAAA",
-        "BBBBBBBB",
-        "CCCCCCCC",
-        "DDDDDDDD",
-        "EEEEEEEE",
-        "FFFFFFFF",
-        "GGGGGGGG",
-        "HHHHHHHH",
-        "IIIIIIII",
-        "JJJJJJJJ",
-        "KKKKKKKK",
-        "LLLLLLLL",
-        "MMMMMMMM",
-        "NNNNNNNN",
-        "A2AAAAAAA",
-        "B2BBBBBBB",
-        "C2CCCCCCC",
-        "D2DDDDDDD",
-        "E2EEEEEEE",
-        "F2FFFFFFF",
-        "G2GGGGGGG",
-        "H2HHHHHHH",
-        "I2IIIIIII",
-        "J2JJJJJJJ",
-        "K2KKKKKKK",
-        "L2LLLLLLL",
-        "M2MMMMMMM",
-        "N2NNNNNNN",
-    ]
-
-    app = SearchInterface(texts)
-    app.mainloop()
+    def getSelection(self):
+        return self.selection

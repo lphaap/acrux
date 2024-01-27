@@ -4,8 +4,3 @@ TODO:
  - CHORE: Add strong typing
  - FEAT: Create controls reloading and changing maps
    -> Multi map support?
- - FEAT: Custom Command prompt with seperate profile?
-   -> Input controls
-   -> GUI element
- - FEAT: Multithreading the pipeline, necessary?
-[[[[[[[[[[[[[[]]]]]]]]]]]]]]

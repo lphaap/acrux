@@ -31,6 +31,9 @@ class HotkeyFilter(PipelineFilter):
         return None
 
     def parseKeyMap(self, map):
+        if not isinstance(map, list):
+            map = [map]
+
         parsedMap = {}
         for entry in map:
             trigger = entry['trigger']
