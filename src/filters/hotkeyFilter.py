@@ -31,22 +31,26 @@ class HotkeyFilter(PipelineFilter):
         return None
 
     def parseKeyMap(self, map):
+        if not isinstance(map, list):
+            map = [map]
+
         parsedMap = {}
-        for entry in map.values():
+        for entry in map:
+            trigger = entry['trigger']
+
             modifier = 'none'
-            if 'modifiers' in entry:
+            if 'modifiers' in trigger:
                 modifier = self.parseModifier(
-                    entry['modifiers']
+                    trigger['modifiers']
                 )
-            key = entry['key']
-            macro = entry['steps']
 
             if parsedMap.get(modifier) == None:
                 parsedMap[modifier] = {}
 
-            parsedMap[modifier][key] = macro
+            key = trigger['key']
+            steps = entry['steps']
 
-        logger.log(parsedMap)
+            parsedMap[modifier][key] = steps
 
         return parsedMap
 

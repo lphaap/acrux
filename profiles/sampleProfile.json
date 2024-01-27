@@ -1,34 +1,69 @@
 {
-    "m0": {
-        "key": "e",
-        "modifiers": "alt_gr",
-        "steps": [
-            "clipboard.copy",
-            { "keyboard.type": "[" },
-            "clipboard.paste"
+    "functions": {
+        "startup": {
+            "trigger": {
+                "key": "z",
+                "modifiers": "alt_gr"
+            },
+            "steps": [
+                "gui.init"
+            ]
+        },
+        "actions": [
+            {
+                "identifier": "test.A1",
+                "steps": [
+                    "state.kill"
+                ]
+            },
+            {
+                "identifier": "test.B2",
+                "steps": [
+                    "state.kill"
+                ]
+            }
         ]
     },
-    "m1": {
-        "key": "r",
-        "modifiers": "alt_gr",
-        "steps": [
-            "clipboard.copy",
-            { "keyboard.type": "{" },
-            "clipboard.paste"
-        ]
-    },
-    "m2": {
-        "key": "v",
-        "modifiers": "alt_gr",
-        "steps": [
-            "state.toggle"
-        ]
-    },
-    "m3": {
-        "key": "n",
-        "modifiers": "alt_gr",
-        "steps": [
-            "state.kill"
-        ]
-    }
+    "macros": [
+        {
+            "trigger": {
+                "key": "e",
+                "modifiers": "alt_gr"
+            },
+            "steps": [
+                "clipboard.copy",
+                { "keyboard.type": "[" },
+                "clipboard.paste"
+            ]
+        },
+        {
+            "trigger": {
+                "key": "r",
+                "modifiers": "alt_gr"
+            },
+            "steps": [
+                "clipboard.copy",
+                { "keyboard.type": "{" },
+                "clipboard.paste"
+            ]
+        },
+        {
+            "trigger": {
+                "key": "v",
+                "modifiers": "alt_gr"
+            },
+            "steps": [
+                "state.toggle"
+            ]
+        },
+        {
+            "trigger": {
+                "key": "n",
+                "modifiers": "alt_gr"
+            },
+            "steps": [
+                "state.kill"
+            ]
+        }
+    ]
 }

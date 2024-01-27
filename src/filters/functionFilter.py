@@ -38,30 +38,41 @@ class FunctionFilter(PipelineFilter):
         self.inactiveMap = {}
         self.inactiveMap.update(stateMap)
 
-    def process(self, data: any):
-        functions = []
-
+    def parseFunction(self, sequence):
         # Only allow state handler function during pause
         map = self.activeMap
         if not StateProvider.isActive():
             map = self.inactiveMap
 
+        # Eg. { "function_name": "function_param" }
+        if isinstance(sequence, dict):
+            name = list(sequence.keys())[0];
+            params = list(sequence.values())[0];
+        # Eg. { "function_name" }
+        else:
+            name = sequence
+            params = None
+
+        fn = map.get(name)
+        if fn == None:
+            return None;
+
+        return (fn, params)
+
+    def process(self, data: any):
+        functions = []
+
         macro = data
-        for fn in macro:
-            # Eg. { "function_name": "function_param" }
-            if isinstance(fn, dict):
-                name = list(fn.keys())[0];
-                params = list(fn.values())[0];
-            # Eg. { "function_name" }
+        for sequence in macro:
+            if isinstance(sequence, list):
+                for subSequence in sequence:
+                    fn = self.parseFunction(subSequence)
+                    if fn:
+                        functions.append(fn)
             else:
-                name = fn
-                params = None
-
-            function = map.get(name)
-            if function == None:
-                continue;
-
-            functions.append((function, params))
+                fn = self.parseFunction(sequence)
+                if fn:
+                    functions.append(fn)
 
         if len(functions) == 0:
             return None
