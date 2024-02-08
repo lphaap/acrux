@@ -1,5 +1,7 @@
+import src.utils.logger as logger;
 import subprocess
 import platform
+
 
 class ExeProvider:
 
@@ -16,7 +18,7 @@ class ExeProvider:
         try:
             subprocess.run([executable_path])
         except Exception as e:
-            print(f"Error running executable: {e}")
+            logger.log(f"Error running executable: {e}")
 
     def execute(executable_path):
         """
@@ -30,12 +32,7 @@ class ExeProvider:
             if current_platform in supported_platforms:
                 ExeProvider.run_executable(executable_path)
             else:
-                print(f"Unsupported operating system: {current_platform}")
+                logger.log(f"Unsupported operating system: {current_platform}")
 
         except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-        
-
-
-if __name__ == "__main__":
-    ExeProvider.execute("D:/Lassinmacrosetit/output/executable.exe")
+            logger.log(f"An unexpected error occurred: {e}")
