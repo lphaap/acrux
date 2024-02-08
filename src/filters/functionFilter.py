@@ -2,6 +2,7 @@ from src.meta.pipelineFilter import PipelineFilter
 from src.providers.StateProvider import StateProvider
 from src.providers.ClipboardProvider import ClipboardProvider
 from src.providers.KeyboardProvider import KeyboardProvider
+from src.providers.ExeProvider import ExeProvider
 
 class FunctionFilter(PipelineFilter):
 
@@ -30,10 +31,15 @@ class FunctionFilter(PipelineFilter):
             "state.kill": StateProvider.kill
         }
 
+        exeMap = {
+            "exe.execute": ExeProvider.execute
+        }
+
         self.activeMap = {}
         self.activeMap.update(clipboardMap)
         self.activeMap.update(keyboardMap)
         self.activeMap.update(stateMap)
+        self.activeMap.update(exeMap)
 
         self.inactiveMap = {}
         self.inactiveMap.update(stateMap)
