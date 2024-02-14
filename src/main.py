@@ -4,8 +4,8 @@ from src.filters.functionFilter import FunctionFilter
 from src.filters.keyFilter import KeyFilter
 from src.filters.hotkeyFilter import HotkeyFilter
 from src.providers.GuiProvider import GuiProvider
-from src.keyboardListener import KeyboardListener
-from src.pipelineManager import PipelineManager
+from src.pipeline.keyboardListener import KeyboardListener
+from src.pipeline.pipelineManager import PipelineManager
 from src.utils.fileLoader import FileLoader;
 from src.utils.config import Config;
 import src.utils.logger as logger;

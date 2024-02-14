@@ -1,4 +1,4 @@
-from src.pipelineRunner import PipelineRunner
+from src.pipeline.pipelineRunner import PipelineRunner
 from src.meta.controllable import Controllable
 from src.meta.pipelineInput import PipelineInput
 from src.meta.pipelineFilter import PipelineFilter
@@ -39,7 +39,6 @@ class PipelineManager(Controllable):
             pipeline.connection.send(data)
 
     def listen(self, connection):
-        logger.log(self.active)
         while self.active:
             logger.log("PipelineManager: Listening process")
             data = connection.recv()

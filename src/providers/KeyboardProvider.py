@@ -1,24 +1,24 @@
-from collections import deque
-from types import resolve_bases;
 from pynput import keyboard;
 import clipboard as clipboard;
-import time;
 
 class KeyboardProvider():
 
-    def type(self, line: str):
+    def type(line: str):
         keyboard.Controller().type(line);
 
-    def press(self, key: any):
+    def press(key: any):
         keyboard.Controller().tap(key)
 
-    def pressWithModifier(self, key, modifier):
+    def release(key: any):
+        keyboard.Controller().release(key)
+
+    def pressWithModifier(key, modifier):
         keyboard.Controller().press(modifier)
         keyboard.Controller().tap(key)
         keyboard.Controller().release(modifier)
 
 
-    def clearModifiers(self, *args):
+    def clearModifiers(*args):
         modifiers = [
             keyboard.Key.alt_gr,
             keyboard.Key.alt_l,

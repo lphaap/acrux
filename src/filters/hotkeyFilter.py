@@ -1,34 +1,31 @@
+from src.pipeline.pipelineData import PipelineData
 from src.meta.pipelineFilter import PipelineFilter
+from src.providers.KeyboardProvider import KeyboardProvider
 from copy import deepcopy
-import src.utils.logger as logger;
 
 class HotkeyFilter(PipelineFilter):
 
     def __init__(self, map):
         self.map = self.parseKeyMap(map)
 
-    def process(self, data: any):
-        key = data['key']
-        modifier = self.parseModifier(
-            data['modifiers']
-        )
+    def process(self, data: PipelineData):
+        key = data.get('key')
+        modifiers = data.get('modifiers')
 
-        modifierGroup = self.map.get(modifier)
+        parsedModifier = self.parseModifier(modifiers)
+
+        modifierGroup = self.map.get(parsedModifier)
         if modifierGroup:
             # Use a copy so singleton does not get side-effects
             macro = deepcopy(modifierGroup.get(key))
             if macro:
-                if (
-                    'shift' in modifier or
-                    'alt' in modifier or
-                    'ctrl' in modifier
-                ):
-                    # Insert automatic modifier clearing
-                    macro.insert(0, "keyboard.clearModifiers")
+                KeyboardProvider.release(key)
+                KeyboardProvider.clearModifiers()
 
-                return macro
+                data.set(macro)
+                return
 
-        return None
+        data.kill()
 
     def parseKeyMap(self, map):
         if not isinstance(map, list):

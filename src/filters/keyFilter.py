@@ -1,4 +1,5 @@
 from copy import deepcopy
+from src.pipeline.pipelineData import PipelineData
 from pynput.keyboard import Key, Listener
 from src.meta.keyAction import KeyAction
 from src.meta.pipelineFilter import PipelineFilter
@@ -9,13 +10,13 @@ class KeyFilter(PipelineFilter):
     def __init__(self):
         self.pressedKeys = []
 
-    def process(self, data: any):
-        action = data['action']
+    def process(self, data: PipelineData):
+        action = data.get('action')
 
         # Priotize pre-parsed canonical key when possible
-        rawKey = data['canonical']
+        rawKey = data.get('canonical')
         if rawKey == None:
-            rawKey = data['key']
+            rawKey = data.get('key')
 
         try:
             key = rawKey.char # KeyCode object -> AlphaNumeric
@@ -24,9 +25,11 @@ class KeyFilter(PipelineFilter):
 
         if action == KeyAction.PRESS:
             if key in self.pressedKeys:
+                data.kill()
                 return
 
             if key == None:
+                data.kill()
                 return
 
             payload = {
@@ -42,10 +45,10 @@ class KeyFilter(PipelineFilter):
 
             self.pressedKeys.append(key)
 
-            return payload
+            data.set(payload)
 
         elif action == KeyAction.RELEASE:
             if key in self.pressedKeys:
                 self.pressedKeys.remove(key)
 
-            return None
+            data.kill()
