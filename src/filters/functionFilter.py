@@ -1,8 +1,15 @@
+from src.pipeline.pipelineData import PipelineData
 from src.meta.pipelineFilter import PipelineFilter
-from src.providers.StateProvider import StateProvider
+from src.utils.globals import Globals
 from src.providers.ClipboardProvider import ClipboardProvider
 from src.providers.KeyboardProvider import KeyboardProvider
 from src.providers.ExeProvider import ExeProvider
+from src.providers.TimeProvider import TimeProvider
+from src.providers.StateProvider import StateProvider
+from src.providers.LockProvider import LockProvider
+
+def gg():
+    Globals.state().kill()
 
 class FunctionFilter(PipelineFilter):
 
@@ -16,12 +23,15 @@ class FunctionFilter(PipelineFilter):
             "clipboard.pressPaste": clipboard.pressPaste
         }
 
-        keyboard = KeyboardProvider()
         keyboardMap = {
-            "keyboard.press": keyboard.press,
-            "keboard.pressWithModifiers": keyboard.pressWithModifier,
-            "keyboard.type": keyboard.type,
-            "keyboard.clearModifiers": keyboard.clearModifiers
+            "keyboard.press": KeyboardProvider.press,
+            "keboard.pressWithModifiers": KeyboardProvider.pressWithModifier,
+            "keyboard.type": KeyboardProvider.type,
+            "keyboard.clearModifiers": KeyboardProvider.clearModifiers
+        }
+
+        timeMap = {
+            "time.sleep": TimeProvider.sleep
         }
 
         stateMap = {
@@ -34,10 +44,16 @@ class FunctionFilter(PipelineFilter):
         exeMap = {
             "exe.execute": ExeProvider.execute
         }
+        self.lockRequired = [
+            "keyboard.press",
+            "keboard.pressWithModifiers",
+            "keyboard.type"
+        ]
 
         self.activeMap = {}
         self.activeMap.update(clipboardMap)
         self.activeMap.update(keyboardMap)
+        self.activeMap.update(timeMap)
         self.activeMap.update(stateMap)
         self.activeMap.update(exeMap)
 
@@ -47,7 +63,7 @@ class FunctionFilter(PipelineFilter):
     def parseFunction(self, sequence):
         # Only allow state handler function during pause
         map = self.activeMap
-        if not StateProvider.isActive():
+        if not Globals.state().isActive():
             map = self.inactiveMap
 
         # Eg. { "function_name": "function_param" }
@@ -65,22 +81,45 @@ class FunctionFilter(PipelineFilter):
 
         return (fn, params)
 
-    def process(self, data: any):
-        functions = []
+    def requiresLock(self, sequence):
+        if isinstance(sequence, dict):
+            name = list(sequence.keys())[0];
+        else:
+            name = sequence
 
-        macro = data
-        for sequence in macro:
+        return name in self.lockRequired
+
+
+    def process(self, data: PipelineData):
+        macros = data.get()
+
+        functions = []
+        for sequence in macros:
+            print(sequence)
             if isinstance(sequence, list):
                 for subSequence in sequence:
                     fn = self.parseFunction(subSequence)
                     if fn:
-                        functions.append(fn)
+                        if self.requiresLock(subSequence):
+                            functions.append((LockProvider.lock, data.id()))
+                            functions.append(fn)
+                            functions.append((LockProvider.unlock, data.id()))
+                        else:
+                            functions.append(fn)
             else:
                 fn = self.parseFunction(sequence)
                 if fn:
-                    functions.append(fn)
+                    if self.requiresLock(sequence):
+                        functions.append((LockProvider.lock, data.id()))
+                        functions.append(fn)
+                        functions.append((LockProvider.unlock, data.id()))
+                    else:
+                        functions.append(fn)
+
+
 
         if len(functions) == 0:
-            return None
+            data.kill()
+            return
 
-        return functions
+        data.set(functions)

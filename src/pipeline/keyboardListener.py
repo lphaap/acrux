@@ -1,6 +1,6 @@
 from pynput import keyboard
 from src.meta.pipelineInput import PipelineInput
-from src.pipelineManager import PipelineManager
+from src.pipeline.pipelineManager import PipelineManager
 from src.meta.keyAction import KeyAction
 import src.utils.logger as logger;
 

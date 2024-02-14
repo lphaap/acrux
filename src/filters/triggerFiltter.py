@@ -1,4 +1,4 @@
-from src.utils import logger
+from src.pipeline.pipelineData import PipelineData
 from src.meta.pipelineFilter import PipelineFilter
 
 class TriggerFilter(PipelineFilter):
@@ -6,9 +6,9 @@ class TriggerFilter(PipelineFilter):
     def __init__(self, triggers):
         self.triggers = triggers
 
-    def process(self, data: any):
+    def process(self, data: PipelineData):
         results = []
-        if data:
+        if data.get():
             for trigger in self.triggers:
                 fn = trigger['function']
                 params = trigger['params']
@@ -22,6 +22,7 @@ class TriggerFilter(PipelineFilter):
                     results.append(result)
 
         if len(results) <= 0:
+            data.kill()
             return
 
-        return results
+        data.set(results)

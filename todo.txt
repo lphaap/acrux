@@ -4,3 +4,4 @@ TODO:
  - CHORE: Add strong typing
  - FEAT: Create controls reloading and changing maps
    -> Multi map support?
+ - FIX: Modifier key will get stuck when calling keyboard type
