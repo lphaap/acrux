@@ -1,5 +1,6 @@
-import traceback
 import uuid
+import threading
+import traceback
 from src.utils import logger
 from src.pipeline.pipelineData import PipelineData
 from src.meta.controllable import Controllable
@@ -38,19 +39,31 @@ class PipelineRunner(Controllable):
                     self.stop()
                     break
 
-                data = PipelineData(self.lock)
-                data.set(input)
+                # Run pipeline in a seperate thread to limit load and allow locking
+                thread = threading.Thread(
+                    target=PipelineRunner.run,
+                    args=(self.pipeline, self.lock, input,)
+                )
+                thread.start()
 
-                for filter in self.pipeline:
-                    filter.process(data)
-                    if not data.alive():
-                        break
-
-                    logger.log(data.get())
-
-        except Exception as e:
+        except Exception:
             logger.log('Runner: <<< ERROR >>> \n\n' + traceback.format_exc())
             self.stop()
+
+    def run(*args):
+        pipeline = args[0]
+        lock = args[1]
+        input = args[2]
+
+        data = PipelineData(lock)
+        data.set(input)
+
+        for filter in pipeline:
+            filter.process(data)
+            if not data.alive():
+                break
+
+            logger.log(data.get())
 
     def stop(self):
         self.running = False

@@ -44,6 +44,7 @@ class FunctionFilter(PipelineFilter):
         exeMap = {
             "exe.execute": ExeProvider.execute
         }
+
         self.lockRequired = [
             "keyboard.press",
             "keboard.pressWithModifiers",
@@ -94,19 +95,12 @@ class FunctionFilter(PipelineFilter):
         macros = data.get()
 
         functions = []
-        for sequence in macros:
-            print(sequence)
-            if isinstance(sequence, list):
-                for subSequence in sequence:
-                    fn = self.parseFunction(subSequence)
-                    if fn:
-                        if self.requiresLock(subSequence):
-                            functions.append((LockProvider.lock, data.id()))
-                            functions.append(fn)
-                            functions.append((LockProvider.unlock, data.id()))
-                        else:
-                            functions.append(fn)
-            else:
+        for macroSequence in macros:
+            sequences = macroSequence
+            if not isinstance(macroSequence, list):
+                sequences = [macroSequence]
+
+            for sequence in sequences:
                 fn = self.parseFunction(sequence)
                 if fn:
                     if self.requiresLock(sequence):
@@ -115,8 +109,6 @@ class FunctionFilter(PipelineFilter):
                         functions.append((LockProvider.unlock, data.id()))
                     else:
                         functions.append(fn)
-
-
 
         if len(functions) == 0:
             data.kill()
