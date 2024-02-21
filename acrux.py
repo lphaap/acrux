@@ -1,8 +1,8 @@
-from src.main import init, load, setup;
-from multiprocessing import Process;
-import src.utils.logger as logger;
-from src.utils.globals import Globals;
-import json as json;
+from src.main import init, load, setup
+from multiprocessing import Process
+from src.utils.globals import Globals
+from src.utils.config import Config
+import json as json
 import sys
 
 # Only run setup when master thread is spawned
@@ -14,13 +14,13 @@ if __name__ == '__main__':
     # Skip cli config withouth parameters
     if len( sys.argv ) == 1:
 
-        logger.log("Main: Loading profiles");
+        Globals.log().info("Main: Loading profiles")
         profile = load()
 
-        logger.log("Main: Spawning process");
+        Globals.log().info("Main: Spawning process")
         mainProcess = Process(target=init, args=(profile,))
         mainProcess.start()
 
     else:
-        logger.log("Main: Running setup");
+        Globals.log().info("Main: Running setup")
         setup()

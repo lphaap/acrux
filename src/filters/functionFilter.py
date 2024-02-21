@@ -69,8 +69,8 @@ class FunctionFilter(PipelineFilter):
 
         # Eg. { "function_name": "function_param" }
         if isinstance(sequence, dict):
-            name = list(sequence.keys())[0];
-            params = list(sequence.values())[0];
+            name = list(sequence.keys())[0]
+            params = list(sequence.values())[0]
         # Eg. { "function_name" }
         else:
             name = sequence
@@ -78,13 +78,13 @@ class FunctionFilter(PipelineFilter):
 
         fn = map.get(name)
         if fn == None:
-            return None;
+            return None
 
         return (fn, params)
 
     def requiresLock(self, sequence):
         if isinstance(sequence, dict):
-            name = list(sequence.keys())[0];
+            name = list(sequence.keys())[0]
         else:
             name = sequence
 

@@ -6,36 +6,36 @@ from src.filters.hotkeyFilter import HotkeyFilter
 from src.providers.GuiProvider import GuiProvider
 from src.pipeline.keyboardListener import KeyboardListener
 from src.pipeline.pipelineManager import PipelineManager
-from src.utils.fileLoader import FileLoader;
-from src.utils.config import Config;
-import src.utils.logger as logger;
+from src.utils.fileLoader import FileLoader
+from src.utils.config import Config
+from src.utils.globals import Globals
 
 def setup():
     import src.bootstrap
 
 def load():
-    logger.log("Main: Trying to load profile.");
-    profile = Config.get("defaultProfile");
+    Globals.log().info("Main: Trying to load profile.")
+    profile = Config.get("defaultProfile")
 
     if not profile:
-        logger.log("Main: Trying to load latest profile.");
-        profile = Config.get("latestProfile");
+        Globals.log().info("Main: Trying to load latest profile.")
+        profile = Config.get("latestProfile")
 
     if not profile:
-        logger.log("Main: Could not determine profile");
-        exit();
+        Globals.log().info("Main: Could not determine profile")
+        exit()
 
     profileMap = FileLoader.load(
         Config.get("profileFolder") + profile
-    );
+    )
     if not profileMap:
-        logger.log("Main: No profile found for latest profile name: '" + profile + "'");
-        exit();
+        Globals.log().info("Main: No profile found for latest profile name: '" + profile + "'")
+        exit()
 
-    Config.set("latestProfile", profile);
-    logger.log("Main: Updated latest profile to: '" + profile + "'");
+    Config.set("latestProfile", profile)
+    Globals.log().info("Main: Updated latest profile to: '" + profile + "'")
 
-    logger.log("Main: Profile selected");
+    Globals.log().info("Main: Profile selected")
 
     return profileMap
 
@@ -50,7 +50,7 @@ def init(profile: dict):
             ExecutorFilter() # Execute the mapped functions
         ]
 
-        logger.log("Main: Setting up macro pipeline");
+        Globals.log().info("Main: Setting up macro pipeline")
         pipelineManager.createPipeline(macroPipeline)
 
     if "functions" in profile:
@@ -71,9 +71,9 @@ def init(profile: dict):
             ExecutorFilter() # Execute the selected function from search
         ]
 
-        logger.log("Main: Setting up function pipeline");
+        Globals.log().info("Main: Setting up function pipeline")
         pipelineManager.createPipeline(functionPipeline)
 
-    logger.log("Main: Starting Acrux");
+    Globals.log().info("Main: Starting Acrux")
     pipelineManager.start()
-    logger.log("Main: Stopping Acrux");
+    Globals.log().info("Main: Stopping Acrux")
