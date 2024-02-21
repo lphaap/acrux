@@ -1,10 +1,10 @@
-from pynput import keyboard;
-import clipboard as clipboard;
+from pynput import keyboard
+import clipboard as clipboard
 
 class KeyboardProvider():
 
     def type(line: str):
-        keyboard.Controller().type(line);
+        keyboard.Controller().type(line)
 
     def press(key: any):
         keyboard.Controller().tap(key)
@@ -28,7 +28,7 @@ class KeyboardProvider():
             keyboard.Key.ctrl,
             keyboard.Key.ctrl_l,
             keyboard.Key.ctrl_r,
-        ];
+        ]
 
         for key in modifiers:
-            keyboard.Controller().release(key);
+            keyboard.Controller().release(key)

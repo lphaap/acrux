@@ -1,13 +1,13 @@
-from src.utils.fileLoader import FileLoader;
-from src.utils.config import Config;
+from src.utils.fileLoader import FileLoader
+from src.utils.config import Config
 from src.main import init
 
-import typer;
-import inquirer;
+import typer
+import inquirer
 
-import src.utils.logger as logger;
-import json as json;
-import sys;
+from src.utils.globals import Globals
+import json as json
+import sys
 
 def setupDefaultProfile(profile):
     defaultProfile = Config.get("defaultProfile")
@@ -20,35 +20,35 @@ def setupDefaultProfile(profile):
             message="Do you want to set '" + profile + "' as your default profile?",
             default=True
         ),
-    ];
+    ]
 
-    setDefault = inquirer.prompt(query)["confirm"];
+    setDefault = inquirer.prompt(query)["confirm"]
     if setDefault:
-        Config.set("defaultProfile", profile);
-        logger.log("Main: Updated default profile to: '" + profile + "'");
+        Config.set("defaultProfile", profile)
+        Globals.log().info("Main: Updated default profile to: '" + profile + "'")
 
 def setupLatestProfile(profile) -> None:
     latestProfile = Config.get("latestProfile")
     if (latestProfile == profile):
         return
 
-    Config.set("latestProfile", profile);
-    logger.log("Main: Updated latest profile to: '" + profile + "'");
+    Config.set("latestProfile", profile)
+    Globals.log().info("Main: Updated latest profile to: '" + profile + "'")
 
 def validateFolderPath(current):
     if not current:
-        raise inquirer.errors.ValidationError("", reason="Profile folder cannot be empty!");
+        raise inquirer.errors.ValidationError("", reason="Profile folder cannot be empty!")
 
     if not current.endswith("/"):
-        raise inquirer.errors.ValidationError("", reason="Invalid path! Path should end in a '/'.");
+        raise inquirer.errors.ValidationError("", reason="Invalid path! Path should end in a '/'.")
 
     if not FileLoader.exists(current):
-        raise inquirer.errors.ValidationError("", reason="Invalid path! No such folder.");
+        raise inquirer.errors.ValidationError("", reason="Invalid path! No such folder.")
 
-    return True;
+    return True
 
 # Init typer commands and params:# Init typer CLI interface
-init = typer.Typer(help = "Acrux, for all your macroing needs!");
+init = typer.Typer(help = "Acrux, for all your macroing needs!")
 
 # Select spesific profile
 @init.command()
@@ -62,22 +62,22 @@ def set(
     Try to load a spesific profile defined with the PROFILE param.
     """
 
-    logger.log("Main: Selecting profile '" + profile + "'");
+    Globals.log().info("Main: Selecting profile '" + profile + "'")
 
     if not profile:
-        logger.log("Main: No profile given aborting");
-        exit();
+        Globals.log().info("Main: No profile given aborting")
+        exit()
 
-    profileMap = FileLoader.load(Config.get("profileFolder") + profile);
+    profileMap = FileLoader.load(Config.get("profileFolder") + profile)
     if not profileMap:
-        logger.log("Main: No profile found for given profile name: '" + profile + "'");
-        exit();
+        Globals.log().info("Main: No profile found for given profile name: '" + profile + "'")
+        exit()
 
-    setupDefaultProfile(profile);
-    setupLatestProfile(profile);
+    setupDefaultProfile(profile)
+    setupLatestProfile(profile)
 
-    init(profileMap);
-    return;
+    init(profileMap)
+    return
 
 @init.command()
 def select():
@@ -85,12 +85,12 @@ def select():
     Load all profiles for selection from the specified profile folder.
     """
 
-    logger.log("Main: Enabling profile list selection.");
+    Globals.log().info("Main: Enabling profile list selection.")
 
-    fileNames = FileLoader.list(Config.get("profileFolder"));
+    fileNames = FileLoader.list(Config.get("profileFolder"))
     if not fileNames:
-        logger.log("Main: No profiles found in the specified profile folder.");
-        exit();
+        Globals.log().info("Main: No profiles found in the specified profile folder.")
+        exit()
 
     query = [
         inquirer.List(
@@ -98,20 +98,20 @@ def select():
             message="Select the profile to load?",
             choices=fileNames,
         ),
-    ];
+    ]
 
-    profile = inquirer.prompt(query)["profile"];
+    profile = inquirer.prompt(query)["profile"]
 
-    profileMap = FileLoader.load(Config.get("profileFolder") + profile);
+    profileMap = FileLoader.load(Config.get("profileFolder") + profile)
     if not profileMap:
-        logger.log("Main: No profile found for given profile name: '" + profile + "'");
-        exit();
+        Globals.log().info("Main: No profile found for given profile name: '" + profile + "'")
+        exit()
 
-    setupDefaultProfile(profile);
-    setupLatestProfile(profile);
+    setupDefaultProfile(profile)
+    setupLatestProfile(profile)
 
-    init(profileMap);
-    return;
+    init(profileMap)
+    return
 
 @init.command()
 def setup():
@@ -119,7 +119,7 @@ def setup():
     Run an intial setup and configurations.
     """
 
-    logger.log("Main: Starting config setup.");
+    Globals.log().info("Main: Starting config setup.")
 
     # Handle existing config file
     if FileLoader.exists("config.json"):
@@ -129,14 +129,14 @@ def setup():
                 message="A config file already exists. Would you like to reset it?",
                 default=False
             ),
-        ];
+        ]
 
-        reset = inquirer.prompt(query)["reset"];
+        reset = inquirer.prompt(query)["reset"]
         if not reset:
-            logger.log("Main: Aborting config setup.");
-            exit();
+            Globals.log().info("Main: Aborting config setup.")
+            exit()
 
-    Config.reset();
+    Config.reset()
 
     # Query default config usage
     query = [
@@ -146,25 +146,25 @@ def setup():
             default=False
 
         ),
-    ];
+    ]
 
-    default = inquirer.prompt(query)["default"];
+    default = inquirer.prompt(query)["default"]
     if default:
-        logger.log("Main: Config setup done returning.");
-        return;
+        Globals.log().info("Main: Config setup done returning.")
+        return
 
 
     # Query default config usage
-    profileFolder = Config.get("profileFolder");
+    profileFolder = Config.get("profileFolder")
     query = [
         inquirer.Confirm(
             "default",
             message="Default profile folder set to '" + profileFolder + "', Would you like to set another?",
             default=False
         ),
-    ];
+    ]
 
-    default = inquirer.prompt(query)["default"];
+    default = inquirer.prompt(query)["default"]
     if default:
         query = [
             inquirer.Text(
@@ -172,21 +172,21 @@ def setup():
                 message="Input profile folder path relative to home folder",
                 validate=validateFolderPath
             ),
-        ];
+        ]
 
-        profileFolder = inquirer.prompt(query)["folder"];
-        Config.set("profileFolder", profileFolder);
+        profileFolder = inquirer.prompt(query)["folder"]
+        Config.set("profileFolder", profileFolder)
 
-        logger.log("Main: Profile folder set to '" + profileFolder + "'");
+        Globals.log().info("Main: Profile folder set to '" + profileFolder + "'")
 
-    logger.log("Main: Config setup done returning.");
-    return;
+    Globals.log().info("Main: Config setup done returning.")
+    return
 
 # Init default config if missing
 if not FileLoader.exists("config.json"):
-    logger.log("Main: Missing default config, starting config generation.");
-    setup();
+    Globals.log().info("Main: Missing default config, starting config generation.")
+    setup()
 
 
 # Handle running via Typer CLI interface
-init();
+init()

@@ -3,7 +3,7 @@ from src.pipeline.pipelineData import PipelineData
 from pynput.keyboard import Key, Listener
 from src.meta.keyAction import KeyAction
 from src.meta.pipelineFilter import PipelineFilter
-import src.utils.logger as logger;
+from src.utils.globals import Globals
 
 class KeyFilter(PipelineFilter):
 

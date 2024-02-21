@@ -5,3 +5,4 @@ TODO:
  - FEAT: Create controls reloading and changing maps
    -> Multi map support?
  - FIX: Modifier key will get stuck when calling keyboard type
+ - FIX: Fix Globals init bug

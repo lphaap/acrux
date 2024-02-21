@@ -11,7 +11,7 @@ class SearchInterface(Tk):
         super().__init__()
 
         # Result variable
-        self.selection = None;
+        self.selection = None
 
         # Initialize main components
         self.initWindow()

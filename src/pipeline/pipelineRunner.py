@@ -1,7 +1,6 @@
 import uuid
 import threading
 import traceback
-from src.utils import logger
 from src.pipeline.pipelineData import PipelineData
 from src.meta.controllable import Controllable
 from src.utils.globals import Globals
@@ -13,13 +12,13 @@ class PipelineRunner(Controllable):
         self.connection = connection
         self.running = False
         self.lock = str(uuid.uuid4())
-        logger.log('Runner: Init ' + self.lock)
+        Globals.log().info('Runner: Init ' + self.lock)
 
     def isActive(self):
         return self.running
 
     def start(self):
-        logger.log('Runner: Start')
+        Globals.log().info('Runner: Start')
         self.running = True
         try:
             while self.running:
@@ -47,7 +46,7 @@ class PipelineRunner(Controllable):
                 thread.start()
 
         except Exception:
-            logger.log('Runner: <<< ERROR >>> \n\n' + traceback.format_exc())
+            Globals.log().info('Runner: <<< ERROR >>> \n\n' + traceback.format_exc())
             self.stop()
 
     def run(*args):
@@ -63,9 +62,9 @@ class PipelineRunner(Controllable):
             if not data.alive():
                 break
 
-            logger.log(data.get())
+            Globals.log().debug(data.get())
 
     def stop(self):
         self.running = False
         self.connection.send({ "stop": True })
-        logger.log('Runner: Stop')
+        Globals.log().info('Runner: Stop')

@@ -1,10 +1,10 @@
-from src.utils.fileLoader import FileLoader;
-import json;
+from src.utils.fileLoader import FileLoader
+import json
 
 # A config / settings Borg-class relying on the config.json file
 # The borg pattern: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch05s23.html
 class Borg:
-    sharedState: dict = {};
+    sharedState: dict = {}
 
     def __init__(self) -> None:
         self.__dict__ = self.sharedState
@@ -12,43 +12,43 @@ class Borg:
 class Config(Borg):
 
     def __init__(self):
-        super().__init__();
+        super().__init__()
         if not hasattr(self, "state"):
-            self.state = FileLoader.load("config.json");
+            self.state = FileLoader.load("config.json")
 
     def all(self):
-        return self.state;
+        return self.state
 
     def getValue(self, setting: str):
         try:
-            return self.state[setting];
+            return self.state[setting]
         except:
-            return None;
+            return None
 
     def setValue(self, setting: str, value: str, save = True):
         try:
-            self.state[setting] = value;
+            self.state[setting] = value
             if save:
-                Config.save();
-            return True;
+                Config.save()
+            return True
         except:
-            return False;
+            return False
 
     @staticmethod
     def save():
-        config = Config();
+        config = Config()
         FileLoader.save(
             "config.json",
             json.dumps(config.all(), indent = 4)
-        );
+        )
 
     @staticmethod
     def set(setting: str, value: str, save = True):
-        return Config().setValue(setting, value, save);
+        return Config().setValue(setting, value, save)
 
     @staticmethod
     def get(setting: str):
-        return Config().getValue(setting);
+        return Config().getValue(setting)
 
     @staticmethod
     def reset():
@@ -59,15 +59,15 @@ class Config(Borg):
                 "profileFolder": "profiles/"
             },
             indent = 4
-        );
+        )
 
         # Override existing config file
         if FileLoader.exists("config.json"):
             FileLoader.save(
                 "config.json",
                 defaultConfig
-            );
-            return;
+            )
+            return
 
         # Create one if it does not exist
-        FileLoader.create("config.json", defaultConfig);
+        FileLoader.create("config.json", defaultConfig)

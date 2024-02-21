@@ -15,7 +15,7 @@ class PipelineInput(Controllable, metaclass=abc.ABCMeta):
         )
 
     def __init__(self, pipeline: 'Pipeline'):
-        self.pipeline = pipeline;
+        self.pipeline = pipeline
 
     def publish(self, input):
-        self.pipeline.process(input);
+        self.pipeline.process(input)

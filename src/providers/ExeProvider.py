@@ -1,4 +1,4 @@
-import src.utils.logger as logger;
+from src.utils.globals import Globals
 import subprocess
 import platform
 
@@ -18,7 +18,7 @@ class ExeProvider:
         try:
             subprocess.run([executable_path])
         except Exception as e:
-            logger.log(f"Error running executable: {e}")
+            Globals.log().info(f"Error running executable: {e}")
 
     def execute(executable_path):
         """
@@ -32,7 +32,7 @@ class ExeProvider:
             if current_platform in supported_platforms:
                 ExeProvider.run_executable(executable_path)
             else:
-                logger.log(f"Unsupported operating system: {current_platform}")
+                Globals.log().info(f"Unsupported operating system: {current_platform}")
 
         except Exception as e:
-            logger.log(f"An unexpected error occurred: {e}")
+            Globals.log().info(f"An unexpected error occurred: {e}")
